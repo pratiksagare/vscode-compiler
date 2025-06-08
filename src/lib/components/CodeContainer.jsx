@@ -19,20 +19,19 @@ const CodeContainer = () => {
         let res;
         try {
             res = await runCode(code, selectedLanguage, selectedVersion);
-        }
-        catch (error) {
-            console.error("Error executing code:", error);
-        }
-        finally {
             if (res.run.stderr) {
-                setOutput(`Error: ${res.run.stderr}`);
+                setOutput(res.run.stderr);
             } else if (res.message) {
                 setOutput(res.message);
             } else {
                 setOutput(res.run.output);
             }
+        } catch (error) {
+            setOutput(error.message);
+            console.error("Error executing code:", error);
         }
-    }
+    };
+
     return (
         <div className="h-full flex flex-col">
             <div className="flex justify-between items-center bg-[#181818] px-2 pl-0 ">
